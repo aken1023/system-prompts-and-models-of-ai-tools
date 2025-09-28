@@ -1,0 +1,462 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== CORE ENTITIES ====================
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  icon        String?
+  order       Int      @default(0)
+  tools       Tool[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model Tool {
+  id          String        @id @default(cuid())
+  name        String        @unique
+  slug        String        @unique
+  description String?
+  category    Category      @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  website     String?
+  logo        String?
+  githubUrl   String?
+  status      ToolStatus    @default(ACTIVE)
+  features    String[]
+  tags        String[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  prompts     Prompt[]
+  versions    ToolVersion[]
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([status])
+}
+
+model ToolVersion {
+  id          String   @id @default(cuid())
+  tool        Tool     @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  toolId      String
+  version     String
+  releaseDate DateTime
+  changelog   String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  @@unique([toolId, version])
+  @@index([toolId])
+}
+
+model Prompt {
+  id            String              @id @default(cuid())
+  tool          Tool                @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  toolId        String
+  version       String
+  type          PromptType          @default(SYSTEM)
+  content       String              @db.Text
+  metadata      Json?
+  language      String              @default("en")
+  hash          String              @unique
+  source        String?
+  sourceUrl     String?
+  verifiedAt    DateTime?
+  verifiedBy    String?
+  isOfficial    Boolean             @default(false)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  analyses      Analysis[]
+  comparisons   ComparisonPrompt[]
+  favorites     Favorite[]
+  comments      Comment[]
+  collections   CollectionPrompt[]
+  viewCount     Int                 @default(0)
+  downloadCount Int                 @default(0)
+
+  @@index([toolId])
+  @@index([type])
+  @@index([hash])
+  @@index([language])
+  @@index([isOfficial])
+}
+
+model Analysis {
+  id          String   @id @default(cuid())
+  prompt      Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  promptId    String
+  
+  // Basic metrics
+  wordCount   Int
+  lineCount   Int
+  charCount   Int
+  
+  // Complexity scores (1-10 scale)
+  complexity  Float
+  readability Float
+  
+  // Sentiment analysis
+  sentiment   Json     // {positive: 0.x, negative: 0.x, neutral: 0.x}
+  
+  // Extracted features
+  keyTopics   String[]
+  techniques  String[]
+  patterns    String[]
+  commands    String[]
+  
+  // AI-generated insights
+  summary     String   @db.Text
+  strengths   String[]
+  weaknesses  String[]
+  suggestions String[]
+  
+  // Performance metrics
+  estimatedTokens Int?
+  costEstimate    Float?
+  
+  analyzedAt  DateTime @default(now())
+  modelUsed   String   @default("gpt-4")
+
+  @@unique([promptId])
+  @@index([promptId])
+}
+
+// ==================== USER SYSTEM ====================
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String?
+  username      String?        @unique
+  image         String?
+  bio           String?
+  role          UserRole       @default(FREE)
+  
+  // Auth
+  emailVerified DateTime?
+  password      String?        // For email/password auth
+  accounts      Account[]      // For OAuth
+  sessions      Session[]
+  
+  // Subscription
+  subscription  Subscription?
+  credits       Int            @default(10)
+  creditsUsed   Int            @default(0)
+  
+  // Activity
+  favorites     Favorite[]
+  collections   Collection[]
+  apiKeys       ApiKey[]
+  comments      Comment[]
+  contributions Contribution[]
+  notifications Notification[]
+  
+  // Settings
+  settings      Json           @default("{}")
+  
+  // Stats
+  lastActiveAt  DateTime       @default(now())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([email])
+  @@index([username])
+  @@index([role])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ==================== FEATURES ====================
+
+model Collection {
+  id          String             @id @default(cuid())
+  name        String
+  description String?
+  slug        String
+  isPublic    Boolean            @default(false)
+  isPinned    Boolean            @default(false)
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  prompts     CollectionPrompt[]
+  viewCount   Int                @default(0)
+  forkCount   Int                @default(0)
+  tags        String[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@unique([userId, slug])
+  @@index([userId])
+  @@index([isPublic])
+  @@index([slug])
+}
+
+model CollectionPrompt {
+  id           String     @id @default(cuid())
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  collectionId String
+  prompt       Prompt     @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  promptId     String
+  notes        String?
+  order        Int        @default(0)
+  addedAt      DateTime   @default(now())
+
+  @@unique([collectionId, promptId])
+  @@index([collectionId])
+  @@index([promptId])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  promptId  String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, promptId])
+  @@index([userId])
+  @@index([promptId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  promptId  String
+  parentId  String?
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+  upvotes   Int      @default(0)
+  isEdited  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([promptId])
+  @@index([parentId])
+}
+
+model Comparison {
+  id          String             @id @default(cuid())
+  title       String
+  description String?
+  isPublic    Boolean            @default(false)
+  prompts     ComparisonPrompt[]
+  createdBy   String
+  viewCount   Int                @default(0)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([createdBy])
+  @@index([isPublic])
+}
+
+model ComparisonPrompt {
+  id           String     @id @default(cuid())
+  comparison   Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  comparisonId String
+  prompt       Prompt     @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  promptId     String
+  order        Int        @default(0)
+
+  @@unique([comparisonId, promptId])
+  @@index([comparisonId])
+  @@index([promptId])
+}
+
+// ==================== API & BILLING ====================
+
+model ApiKey {
+  id          String       @id @default(cuid())
+  name        String
+  key         String       @unique
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  permissions String[]
+  rateLimit   Int          @default(1000)
+  usage       ApiKeyUsage[]
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([userId])
+  @@index([key])
+}
+
+model ApiKeyUsage {
+  id        String   @id @default(cuid())
+  apiKey    ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  apiKeyId  String
+  endpoint  String
+  method    String
+  status    Int
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([apiKeyId])
+  @@index([createdAt])
+}
+
+model Subscription {
+  id                String             @id @default(cuid())
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String             @unique
+  plan              SubscriptionPlan   @default(FREE)
+  status            SubscriptionStatus @default(ACTIVE)
+  stripeCustomerId  String?            @unique
+  stripeSubscriptionId String?         @unique
+  stripePriceId     String?
+  currentPeriodEnd  DateTime?
+  cancelAtPeriodEnd Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([stripeCustomerId])
+}
+
+// ==================== COMMUNITY ====================
+
+model Contribution {
+  id          String           @id @default(cuid())
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  type        ContributionType
+  title       String
+  description String?
+  content     String           @db.Text
+  metadata    Json?
+  status      ContributionStatus @default(PENDING)
+  reviewedBy  String?
+  reviewNotes String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  data      Json?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+}
+
+// ==================== ENUMS ====================
+
+enum PromptType {
+  SYSTEM
+  AGENT
+  TOOL_DEFINITION
+  MEMORY
+  PLANNING
+  WORKFLOW
+  OTHER
+}
+
+enum UserRole {
+  FREE
+  PRO
+  ENTERPRISE
+  ADMIN
+}
+
+enum ToolStatus {
+  ACTIVE
+  DEPRECATED
+  ARCHIVED
+}
+
+enum SubscriptionPlan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  PAUSED
+}
+
+enum ContributionType {
+  PROMPT
+  TOOL
+  ANALYSIS
+  TRANSLATION
+  CORRECTION
+}
+
+enum ContributionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  NEEDS_REVISION
+}
+
+enum NotificationType {
+  SYSTEM
+  COMMENT
+  FAVORITE
+  COLLECTION
+  VERSION_UPDATE
+  CONTRIBUTION
+}
