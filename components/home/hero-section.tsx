@@ -17,7 +17,7 @@ export function HeroSection() {
               className="inline-flex items-center gap-2 rounded-full bg-black/5 px-4 py-2 text-sm dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
             >
               <Github className="h-4 w-4" />
-              <span>Star us on GitHub</span>
+              <span>在 GitHub 上給我們星星</span>
               <Star className="h-4 w-4" />
             </Link>
           </div>
@@ -44,13 +44,13 @@ export function HeroSection() {
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/explore">
               <Button size="lg" className="w-full sm:w-auto">
-                Explore Prompts
+                探索提示詞
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/api-docs">
               <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                View API Docs
+                查看 API 文檔
               </Button>
             </Link>
           </div>

@@ -1,8 +1,24 @@
 {
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
-      "Bash(npm install)"
-    ]
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(set DATABASE_URL=file:./dev.db)",
+      "Bash(copy:*)",
+      "Bash(cp:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(sqlite3:*)",
+      "Bash(node:*)",
+      "Bash(start http://localhost:3001/tools)",
+      "Bash(curl:*)",
+      "Bash(start http://localhost:3001/tools/claude-code)",
+      "Bash(mv:*)",
+      "Bash(npx tsx:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ],
+    "defaultMode": "acceptEdits"
   }
 }

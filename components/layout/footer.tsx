@@ -3,25 +3,25 @@ import { Sparkles, Github, Twitter } from 'lucide-react'
 
 export function Footer() {
   const footerLinks = {
-    Product: [
-      { name: 'Features', href: '/features' },
-      { name: 'Pricing', href: '/pricing' },
+    產品: [
+      { name: '功能特色', href: '/features' },
+      { name: '方案定價', href: '/pricing' },
       { name: 'API', href: '/api-docs' },
-      { name: 'Changelog', href: '/changelog' },
+      { name: '更新日誌', href: '/changelog' },
     ],
-    Resources: [
-      { name: 'Documentation', href: '/docs' },
-      { name: 'Blog', href: '/blog' },
-      { name: 'Community', href: '/community' },
-      { name: 'Support', href: '/support' },
+    資源: [
+      { name: '文檔', href: '/docs' },
+      { name: '部落格', href: '/blog' },
+      { name: '社群', href: '/community' },
+      { name: '技術支援', href: '/support' },
     ],
-    Company: [
-      { name: 'About', href: '/about' },
-      { name: 'Contact', href: '/contact' },
-      { name: 'Privacy', href: '/privacy' },
-      { name: 'Terms', href: '/terms' },
+    公司: [
+      { name: '關於我們', href: '/about' },
+      { name: '聯絡我們', href: '/contact' },
+      { name: '隱私政策', href: '/privacy' },
+      { name: '服務條款', href: '/terms' },
     ],
-    Connect: [
+    聯繫: [
       { name: 'GitHub', href: 'https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools', external: true },
       { name: 'Discord', href: 'https://discord.gg/NwzrWErdMU', external: true },
       { name: 'Twitter', href: 'https://twitter.com/aipromptlib', external: true },
@@ -36,10 +36,10 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
               <Sparkles className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">APL</span>
+              <span className="font-bold text-xl">提示詞庫</span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
-              Professional platform for AI prompts collection and analysis
+              專業的 AI 提示詞收集與分析平台
             </p>
             <div className="mt-6 flex space-x-4">
               <Link
@@ -87,17 +87,17 @@ export function Footer() {
         <div className="mt-12 border-t pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} AI Prompt Library. All rights reserved.
+              © {new Date().getFullYear()} AI 提示詞庫. 保留所有權利.
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground">
               <Link href="/privacy" className="hover:text-primary">
-                Privacy Policy
+                隱私政策
               </Link>
               <Link href="/terms" className="hover:text-primary">
-                Terms of Service
+                服務條款
               </Link>
               <Link href="/cookies" className="hover:text-primary">
-                Cookie Policy
+                Cookie 政策
               </Link>
             </div>
           </div>

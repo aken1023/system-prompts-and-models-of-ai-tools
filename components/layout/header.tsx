@@ -30,28 +30,28 @@ export function Header() {
 
   const navigation = [
     {
-      name: 'Explore',
+      name: '探索',
       href: '/explore',
       icon: Search,
-      description: 'Browse all AI prompts'
+      description: '瀏覽所有 AI 提示詞'
     },
     {
-      name: 'Tools',
+      name: '工具',
       href: '/tools',
       icon: Code2,
-      description: 'View all AI tools'
+      description: '查看所有 AI 工具'
     },
     {
-      name: 'Compare',
+      name: '比較',
       href: '/compare',
       icon: Sparkles,
-      description: 'Compare prompts side-by-side'
+      description: '並排比較提示詞'
     },
     {
-      name: 'Collections',
+      name: '收藏集',
       href: '/collections',
       icon: BookOpen,
-      description: 'Community collections'
+      description: '社群收藏集'
     },
   ]
 
@@ -64,10 +64,10 @@ export function Header() {
             <Link href="/" className="flex items-center space-x-2">
               <Sparkles className="h-6 w-6 text-primary" />
               <span className="font-bold text-xl hidden sm:inline">
-                AI Prompt Library
+                AI 提示詞庫
               </span>
               <span className="font-bold text-xl sm:hidden">
-                APL
+                提示詞庫
               </span>
             </Link>
 
@@ -89,25 +89,14 @@ export function Header() {
           <div className="flex items-center gap-4">
             <ThemeToggle />
             
-            {session ? (
-              <div className="hidden md:flex items-center gap-4">
-                <Link href="/dashboard">
-                  <Button variant="ghost">Dashboard</Button>
-                </Link>
-                <Link href="/api-docs">
-                  <Button variant="outline">API</Button>
-                </Link>
-              </div>
-            ) : (
-              <div className="hidden md:flex items-center gap-4">
-                <Link href="/login">
-                  <Button variant="ghost">Sign In</Button>
-                </Link>
-                <Link href="/signup">
-                  <Button>Get Started</Button>
-                </Link>
-              </div>
-            )}
+            <div className="hidden md:flex items-center gap-4">
+              <Link href="/api-docs">
+                <Button variant="outline">API 文檔</Button>
+              </Link>
+              <Link href="/explore">
+                <Button>開始探索</Button>
+              </Link>
+            </div>
 
             {/* Mobile menu button */}
             <button
@@ -147,33 +136,16 @@ export function Header() {
               ))}
               
               <div className="border-t pt-4 flex flex-col gap-2">
-                {session ? (
-                  <>
-                    <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="ghost" className="w-full justify-start">
-                        Dashboard
-                      </Button>
-                    </Link>
-                    <Link href="/api-docs" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="outline" className="w-full">
-                        API Documentation
-                      </Button>
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="ghost" className="w-full">
-                        Sign In
-                      </Button>
-                    </Link>
-                    <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
-                      <Button className="w-full">
-                        Get Started
-                      </Button>
-                    </Link>
-                  </>
-                )}
+                <Link href="/api-docs" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-full">
+                    API 文檔
+                  </Button>
+                </Link>
+                <Link href="/explore" onClick={() => setMobileMenuOpen(false)}>
+                  <Button className="w-full">
+                    開始探索
+                  </Button>
+                </Link>
               </div>
             </nav>
           </div>

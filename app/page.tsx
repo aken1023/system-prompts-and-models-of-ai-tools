@@ -13,13 +13,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-24 sm:py-32">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-              Discover AI{' '}
-              <span className="gradient-text">System Prompts</span>{' '}
-              from Leading Tools
+              探索頂尖 AI 工具的{' '}
+              <span className="gradient-text">系統提示詞</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-              Explore, analyze, and learn from 30+ AI tools including Claude, GPT, Cursor, and more. 
-              Professional platform for prompt engineering insights.
+              探索、分析並學習來自 Claude、GPT、Cursor 等 30+ 個 AI 工具的提示詞。
+              專業的提示詞工程洞察平台。
             </p>
             
             {/* Search Bar */}
@@ -31,15 +30,15 @@ export default function HomePage() {
             <div className="mt-10 flex justify-center gap-8 text-sm text-gray-600 dark:text-gray-400">
               <div>
                 <span className="font-semibold text-2xl text-gray-900 dark:text-white">30+</span>
-                <p>AI Tools</p>
+                <p>AI 工具</p>
               </div>
               <div>
                 <span className="font-semibold text-2xl text-gray-900 dark:text-white">20,000+</span>
-                <p>Lines of Prompts</p>
+                <p>提示詞行數</p>
               </div>
               <div>
                 <span className="font-semibold text-2xl text-gray-900 dark:text-white">100+</span>
-                <p>Techniques</p>
+                <p>技巧方法</p>
               </div>
             </div>
           </div>
@@ -56,10 +55,10 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Popular AI Tools
+              熱門 AI 工具
             </h2>
             <p className="mt-4 text-gray-600 dark:text-gray-400">
-              Explore system prompts from the most popular AI coding assistants and tools
+              探索最受歡迎的 AI 編程助手和工具的系統提示詞
             </p>
           </div>
           <ToolsGrid />

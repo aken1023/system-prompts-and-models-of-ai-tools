@@ -10,33 +10,33 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'AI Prompt Library - Professional SaaS for AI Prompts',
-    template: '%s | AI Prompt Library'
+    default: 'AI 提示詞庫 - 專業的 AI 提示詞平台',
+    template: '%s | AI 提示詞庫'
   },
-  description: 'Explore, analyze, and learn from 30+ AI tools system prompts. Professional SaaS platform for prompt engineering.',
-  keywords: ['AI prompts', 'system prompts', 'prompt engineering', 'Claude', 'GPT', 'Cursor', 'AI tools'],
-  authors: [{ name: 'AI Prompt Library Team' }],
-  creator: 'AI Prompt Library',
+  description: '探索、分析並學習來自 30+ 個 AI 工具的系統提示詞。專業的提示詞工程洞察平台。',
+  keywords: ['AI 提示詞', '系統提示詞', '提示詞工程', 'Claude', 'GPT', 'Cursor', 'AI 工具'],
+  authors: [{ name: 'AI 提示詞庫團隊' }],
+  creator: 'AI 提示詞庫',
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'zh_TW',
     url: 'https://aipromptlibrary.com',
-    title: 'AI Prompt Library',
-    description: 'Professional SaaS platform for AI prompts collection and analysis',
-    siteName: 'AI Prompt Library',
+    title: 'AI 提示詞庫',
+    description: '專業的 AI 提示詞收集與分析平台',
+    siteName: 'AI 提示詞庫',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'AI Prompt Library'
+        alt: 'AI 提示詞庫'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Prompt Library',
-    description: 'Professional SaaS platform for AI prompts collection and analysis',
+    title: 'AI 提示詞庫',
+    description: '專業的 AI 提示詞收集與分析平台',
     images: ['/og-image.png'],
     creator: '@aipromptlib'
   },
@@ -66,10 +66,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen flex flex-col`}>
+      <body className={`${inter.className} min-h-screen flex flex-col overflow-x-hidden`}>
         <Providers>
           <Header />
-          <main className="flex-1">
+          <main className="flex-1 overflow-y-auto">
             {children}
           </main>
           <Footer />

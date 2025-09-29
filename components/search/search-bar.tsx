@@ -21,7 +21,7 @@ export function SearchBar() {
         <Search className="absolute left-3 h-4 w-4 text-muted-foreground" />
         <Input
           type="text"
-          placeholder="Search AI prompts, tools, techniques..."
+          placeholder="搜尋 AI 提示詞、工具、技巧..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="pl-10 pr-20 h-12 text-base"
@@ -31,16 +31,16 @@ export function SearchBar() {
             <Filter className="h-4 w-4" />
           </Button>
           <Button type="submit" size="sm">
-            Search
+            搜尋
           </Button>
         </div>
       </div>
       
       {/* Quick suggestions */}
       <div className="absolute top-full mt-2 w-full bg-background border rounded-lg shadow-lg p-4 hidden group-focus-within:block">
-        <div className="text-sm text-muted-foreground mb-2">Popular searches:</div>
+        <div className="text-sm text-muted-foreground mb-2">熱門搜尋：</div>
         <div className="flex flex-wrap gap-2">
-          {['Claude', 'Cursor', 'System prompts', 'Code generation', 'Planning'].map((term) => (
+          {['Claude', 'Cursor', '系統提示詞', '程式碼生成', '規劃'].map((term) => (
             <button
               key={term}
               type="button"

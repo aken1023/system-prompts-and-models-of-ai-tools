@@ -5,26 +5,26 @@ const stats = [
   {
     icon: TrendingUp,
     value: '2.5M+',
-    label: 'Monthly Views',
-    description: 'Developers exploring prompts monthly'
+    label: '月瀏覽量',
+    description: '開發者每月探索提示詞次數'
   },
   {
     icon: Users,
     value: '50K+',
-    label: 'Active Users',
-    description: 'Prompt engineers using our platform'
+    label: '活躍用戶',
+    description: '使用我們平台的提示詞工程師'
   },
   {
     icon: Download,
     value: '1M+',
-    label: 'Downloads',
-    description: 'Prompts downloaded and used'
+    label: '下載次數',
+    description: '提示詞下載和使用次數'
   },
   {
     icon: Zap,
     value: '99.9%',
-    label: 'Uptime',
-    description: 'Reliable access to prompt library'
+    label: '穩定性',
+    description: '提示詞庫的可靠存取率'
   }
 ]
 
@@ -33,10 +33,10 @@ export function StatsSection() {
     <div className="mx-auto max-w-6xl">
       <div className="mx-auto max-w-2xl text-center mb-12">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-          Trusted by developers worldwide
+          全球開發者信賴的平台
         </h2>
         <p className="mt-4 text-gray-600 dark:text-gray-400">
-          Join thousands of developers who rely on our prompt library
+          加入數千名依賴我們提示詞庫的開發者行列
         </p>
       </div>
       
